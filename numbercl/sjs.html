@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>随机数生成器</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        input {
+            padding: 5px;
+            margin: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+
+        a.home-link {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            text-decoration: none;
+            color: blue;
+            font-weight: bold;
+            padding: 5px 10px;
+            background-color: #f2f2f2;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <a class="home-link" href="../index.html">返回首页</a>
+    <h2>随机数生成器</h2>
+    <label for="minValue">随机数范围最小值：</label>
+    <input type="number" id="minValue">
+    <label for="maxValue">随机数范围最大值：</label>
+    <input type="number" id="maxValue">
+    <label for="count">生成随机数数量：</label>
+    <input type="number" id="count">
+    <button onclick="generateRandomNumbers()">生成随机数</button>
+    <button onclick="exportToTxt()">导出为 TXT</button>
+    <div id="result"></div>
+
+    <script>
+        function generateRandomNumbers() {
+            const minValue = parseInt(document.getElementById('minValue').value);
+            const maxValue = parseInt(document.getElementById('maxValue').value);
+            const count = parseInt(document.getElementById('count').value);
+
+            if (isNaN(minValue) || isNaN(maxValue) || isNaN(count) || minValue >= maxValue || count <= 0) {
+                document.getElementById('result').innerText = '请输入有效的范围和数量。';
+                return;
+            }
+
+            const randomNumbers = [];
+            for (let i = 0; i < count; i++) {
+                const randomNumber = Math.floor(Math.random() * (maxValue - minValue + 1)) + minValue;
+                randomNumbers.push(randomNumber);
+            }
+
+            document.getElementById('result').innerText = `生成的随机数：${randomNumbers.join(', ')}`;
+        }
+
+        function exportToTxt() {
+            const resultText = document.getElementById('result').innerText.split('：')[1];
+            if (resultText) {
+                const blob = new Blob([resultText], { type: 'text/plain' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = 'random_numbers.txt';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            } else {
+                alert('请先生成随机数。');
+            }
+        }
+    </script>
+</body>
+
+</html>
