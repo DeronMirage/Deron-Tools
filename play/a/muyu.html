@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>电子木鱼</title>
+	<style>
+		body {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			height: 100vh;
+			background-color: black;
+			font-family: Arial, sans-serif;
+		}
+
+		.mokugyo {
+			width: 200px;
+			height: 200px;
+			background-image: url('muyu.jpg');
+			background-size: cover;
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			cursor: pointer;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+			transition: transform 0.2s ease-in-out;
+		}
+
+			.mokugyo.active {
+				transform: scale(0.9);
+			}
+
+			.mokugyo:hover {
+				background-color: #d4c9bc;
+			}
+
+		.count {
+			font-size: 24px;
+			margin-top: 20px;
+			color: white;
+		}
+
+		.merit {
+			position: absolute;
+			right: 0;
+			top: 50%;
+			transform: translateY(-50%);
+			font-size: 24px;
+			color: gold;
+			opacity: 0;
+			transition: opacity 1s ease-in-out;
+		}
+
+		/* 美化返回专题按钮 */
+		.back-to-topic {
+			position: absolute;
+			top: 20px;
+			left: 20px;
+			background-color: rgba(255, 255, 255, 0.2);
+			color: white;
+			padding: 10px 20px;
+			border-radius: 5px;
+			text-decoration: none;
+			transition: background-color 0.3s ease;
+		}
+
+			.back-to-topic:hover {
+				background-color: rgba(255, 255, 255, 0.4);
+			}
+
+		/* 美化全屏按钮 */
+		.fullscreen-btn {
+			position: absolute;
+			top: 20px;
+			right: 20px;
+			background-color: rgba(255, 255, 255, 0.2);
+			color: white;
+			padding: 10px 20px;
+			border-radius: 5px;
+			text-decoration: none;
+			transition: background-color 0.3s ease;
+		}
+
+			.fullscreen-btn:hover {
+				background-color: rgba(255, 255, 255, 0.4);
+			}
+
+		/* 美化清零按钮 */
+		.reset-btn {
+			position: absolute;
+			bottom: 20px;
+			left: 50%;
+			transform: translateX(-50%);
+			background-color: rgba(255, 255, 255, 0.2);
+			color: white;
+			padding: 10px 20px;
+			border-radius: 5px;
+			text-decoration: none;
+			transition: background-color 0.3s ease;
+		}
+
+			.reset-btn:hover {
+				background-color: rgba(255, 255, 255, 0.4);
+			}
+	</style>
+</head>
+
+<body>
+	<a href="../index.html" class="back-to-topic">返回专题</a>
+	<a href="#" class="fullscreen-btn">全屏</a>
+	<div class="mokugyo" onclick="playSound()"></div>
+	<div class="count">敲击次数：0</div>
+	<div class="merit">功德+1</div>
+	<a href="#" class="reset-btn">清零</a>
+
+	<audio id="mokugyoSound" src="muyu.mp3"></audio>
+
+	<script>
+		let count = 0;
+		function playSound() {
+			const audio = document.getElementById('mokugyoSound');
+			audio.play();
+			count++;
+			document.querySelector('.count').textContent = `敲击次数：${count}`;
+			document.querySelector('.merit').style.opacity = 1;
+			setTimeout(() => {
+				document.querySelector('.merit').style.opacity = 0;
+			}, 1000);
+			// 手动触发动画
+			document.querySelector('.mokugyo').classList.add('active');
+			setTimeout(() => {
+				document.querySelector('.mokugyo').classList.remove('active');
+			}, 200);
+		}
+
+		// 添加全屏功能
+		document.querySelector('.fullscreen-btn').addEventListener('click', function () {
+			if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
+				if (document.exitFullscreen) {
+					document.exitFullscreen();
+				} else if (document.webkitExitFullscreen) {
+					document.webkitExitFullscreen();
+				} else if (document.mozCancelFullScreen) {
+					document.mozCancelFullScreen();
+				} else if (document.msExitFullscreen) {
+					document.msExitFullscreen();
+				}
+			} else {
+				const element = document.documentElement;
+				if (element.requestFullscreen) {
+					element.requestFullscreen();
+				} else if (element.webkitRequestFullscreen) {
+					element.webkitRequestFullscreen();
+				} else if (element.mozRequestFullScreen) {
+					element.mozRequestFullScreen();
+				} else if (element.msRequestFullscreen) {
+					element.msRequestFullscreen();
+				}
+			}
+		});
+
+		// 添加清零功能
+		document.querySelector('.reset-btn').addEventListener('click', function () {
+			count = 0;
+			document.querySelector('.count').textContent = `敲击次数：${count}`;
+		});
+	</script>
+</body>
+
+</html>
