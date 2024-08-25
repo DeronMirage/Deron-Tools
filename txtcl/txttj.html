@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+	<meta charset="UTF-8">
+	<title>字数统计</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+		}
+
+		.container {
+			max-width: 800px;
+			margin: 0 auto;
+			padding: 20px;
+		}
+
+		textarea {
+			width: 100%;
+			height: 300px; /* 增大输入框高度 */
+			resize: vertical;
+			padding: 10px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			margin-bottom: 10px;
+		}
+
+		.result {
+			font-size: 18px;
+			font-weight: bold;
+			display: flex; /* 使用 flex 布局 */
+			flex-wrap: wrap;
+		}
+
+			.result div {
+				width: 200px; /* 固定每个统计项的宽度 */
+				margin-right: 20px;
+				margin-bottom: 10px;
+			}
+
+		/* 按钮样式 */
+		.home-button {
+			position: absolute;
+			top: 20px;
+			left: 20px;
+			padding: 8px 15px;
+			background-color: #333;
+			color: white;
+			text-decoration: none;
+			border-radius: 5px;
+		}
+	</style>
+</head>
+
+<body>
+	<a href="../index.html" class="home-button">返回主页</a>
+	<div class="container">
+		<h1>字数统计</h1>
+		<textarea id="inputText" placeholder="输入文本..."></textarea>
+		<div class="result">
+			<div>总字数：0</div>
+			<div>不带标点字数：0</div>
+			<div>带空格字数：0</div>
+			<div>不带空格字数：0</div>
+			<div>带数字字数：0</div>
+			<div>不带数字字数：0</div>
+			<div>带英文字数：0</div>
+			<div>不带英文字数：0</div>
+		</div>
+	</div>
+
+	<script>
+		const inputText = document.getElementById('inputText');
+		const resultDiv = document.querySelector('.result');
+
+		function countCharacters(text, condition) {
+			let count = 0;
+			for (let char of text) {
+				if (condition(char)) {
+					count++;
+				}
+			}
+			return count;
+		}
+
+		inputText.addEventListener('input', function () {
+			const text = this.value;
+			const totalCount = text.length;
+			const withoutPunctuation = countCharacters(text, char => !/[^\w\s]/.test(char));
+			const withSpaces = totalCount;
+			const withoutSpaces = countCharacters(text, char => char.trim() !== '');
+			const withNumbers = countCharacters(text, char => /\d/.test(char));
+			const withoutNumbers = totalCount - withNumbers;
+			const withEnglish = countCharacters(text, char => /[a-zA-Z]/.test(char));
+			const withoutEnglish = totalCount - withEnglish;
+
+			resultDiv.querySelectorAll('div').forEach((item, index) => {
+				switch (index) {
+					case 0:
+						item.textContent = `总字数：${totalCount}`;
+						break;
+					case 1:
+						item.textContent = `不带标点字数：${withoutPunctuation}`;
+						break;
+					case 2:
+						item.textContent = `带空格字数：${withSpaces}`;
+						break;
+					case 3:
+						item.textContent = `不带空格字数：${withoutSpaces}`;
+						break;
+					case 4:
+						item.textContent = `带数字字数：${withNumbers}`;
+						break;
+					case 5:
+						item.textContent = `不带数字字数：${withoutNumbers}`;
+						break;
+					case 6:
+						item.textContent = `带英文字数：${withEnglish}`;
+						break;
+					case 7:
+						item.textContent = `不带英文字数：${withoutEnglish}`;
+						break;
+				}
+			});
+		});
+	</script>
+<footer>
+	&copy; 2024 Deron Tools。所有 Deron，Mirage 保留。
+</footer>
+</body>
+
+</html>

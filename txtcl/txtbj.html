@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+	<meta charset="UTF-8">
+	<title>文本编辑器</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+		}
+
+		.editor-container {
+			width: 800px;
+			margin: 0 auto;
+			padding: 20px;
+		}
+
+		.toolbar {
+			background-color: #f2f2f2;
+			padding: 10px;
+			border-bottom: 1px solid #ddd;
+		}
+
+			.toolbar button {
+				background-color: #fff;
+				border: 1px solid #ccc;
+				padding: 5px 10px;
+				margin-right: 5px;
+				cursor: pointer;
+			}
+
+		.editor {
+			border: 1px solid #ddd;
+			padding: 10px;
+			min-height: 300px;
+			outline: none;
+		}
+
+		.font-size-select {
+			width: 80px;
+		}
+
+		/* 新增的图片编辑样式 */
+		img[contenteditable="false"] {
+			cursor: pointer;
+		}
+
+		.image-edit-modal {
+			display: none;
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0, 0, 0, 0.5);
+			z-index: 999;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.image-edit-modal-content {
+			background-color: #fff;
+			padding: 20px;
+			border-radius: 5px;
+			text-align: center;
+		}
+
+			.image-edit-modal-content input[type="number"] {
+				width: 80px;
+				padding: 5px;
+				margin: 5px;
+			}
+
+			.image-edit-modal-content button {
+				padding: 8px 15px;
+				background-color: #4CAF50;
+				color: white;
+				border: none;
+				border-radius: 5px;
+				cursor: pointer;
+				margin-top: 10px;
+			}
+
+		/* 优化返回首页按钮样式 */
+		.home-link {
+			position: absolute;
+			top: 10px;
+			left: 10px;
+			text-decoration: none;
+			color: #333;
+			font-weight: bold;
+			background-color: #f0f0f0;
+			padding: 8px 12px;
+			border-radius: 5px;
+		}
+	</style>
+</head>
+
+<body>
+	<a href="../index.html" class="home-link">返回首页</a>
+	<div class="editor-container">
+		<div class="toolbar">
+			<button onclick="makeBold()">粗体</button>
+			<button onclick="makeItalic()">斜体</button>
+			<button onclick="makeUnderline()">下划线</button>
+			<select class="font-size-select" onchange="changeFontSize(this.value)">
+				<option value="8px">8px</option>
+				<option value="10px">10px</option>
+				<option value="12px">12px</option>
+				<option value="14px">14px</option>
+				<option value="16px">16px</option>
+				<option value="18px">18px</option>
+				<option value="20px">20px</option>
+				<option value="22px">22px</option>
+				<option value="24px">24px</option>
+			</select>
+			<button onclick="insertImageByURL()">通过 URL 插入图片</button>
+			<input type="file" id="imageFileInput" style="display:none" onchange="insertImageFromFile(this.files)">
+			<button onclick="document.getElementById('imageFileInput').click()">从本地选择图片</button>
+			<button onclick="openImageEditModal()">编辑图片</button>
+			<button onclick="exportToTxt()">导出为 TXT</button>
+			<button onclick="exportToWord()">导出为 Word</button>
+		</div>
+		<div class="editor" contenteditable="true"></div>
+	</div>
+
+	<div class="image-edit-modal">
+		<div class="image-edit-modal-content">
+			<h3>编辑图片</h3>
+			<label for="widthInput">宽度：</label><input type="number" id="widthInput">
+			<label for="heightInput">高度：</label><input type="number" id="heightInput">
+			<label for="rotationInput">旋转角度：</label><input type="number" id="rotationInput">
+			<button onclick="applyImageEdit()">确定</button>
+		</div>
+	</div>
+
+	<script>
+		function makeBold() {
+			document.execCommand('bold', false, null);
+		}
+
+		function makeItalic() {
+			document.execCommand('italic', false, null);
+		}
+
+		function makeUnderline() {
+			document.execCommand('underline', false, null);
+		}
+
+		function changeFontSize(size) {
+			document.execCommand('fontSize', false, size);
+		}
+
+		function insertImageByURL() {
+			const imgUrl = prompt('请输入图片 URL：');
+			if (imgUrl) {
+				document.execCommand('insertImage', false, imgUrl);
+			}
+		}
+
+		function insertImageFromFile(files) {
+			if (files.length > 0) {
+				const file = files[0];
+				const reader = new FileReader();
+				reader.onload = function (e) {
+					const imgUrl = e.target.result;
+					document.execCommand('insertImage', false, imgUrl);
+				};
+				reader.readAsDataURL(file);
+			}
+		}
+
+		function openImageEditModal() {
+			const selectedImage = document.querySelector('.editor img[contenteditable="false"]');
+			if (selectedImage) {
+				const rect = selectedImage.getBoundingClientRect();
+				document.getElementById('widthInput').value = selectedImage.width;
+				document.getElementById('heightInput').value = selectedImage.height;
+				document.getElementById('rotationInput').value = 0;
+				document.querySelector('.image-edit-modal').style.display = 'flex';
+			}
+		}
+
+		function applyImageEdit() {
+			const selectedImage = document.querySelector('.editor img[contenteditable="false"]');
+			if (selectedImage) {
+				const width = parseInt(document.getElementById('widthInput').value);
+				const height = parseInt(document.getElementById('heightInput').value);
+				const rotation = parseInt(document.getElementById('rotationInput').value);
+				selectedImage.style.width = width + 'px';
+				selectedImage.style.height = height + 'px';
+				selectedImage.style.transform = `rotate(${rotation}deg)`;
+				document.querySelector('.image-edit-modal').style.display = 'none';
+			}
+		}
+
+		function exportToTxt() {
+			const text = document.querySelector('.editor').innerText;
+			const blob = new Blob([text], { type: 'text/plain' });
+			const a = document.createElement('a');
+			a.href = URL.createObjectURL(blob);
+			a.download = 'text.txt';
+			a.click();
+		}
+
+		function exportToWord() {
+			const content = document.querySelector('.editor').innerHTML;
+			const blob = new Blob([content], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+			const a = document.createElement('a');
+			a.href = URL.createObjectURL(blob);
+			a.download = 'document.docx';
+			a.click();
+		}
+	</script>
+</body>
+
+</html>
