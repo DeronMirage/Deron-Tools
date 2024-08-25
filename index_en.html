@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deron Tools</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        nav {
+            background-color: #444;
+            padding: 10px;
+        }
+
+            nav a {
+                color: white;
+                text-decoration: none;
+                margin: 0 10px;
+            }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .tool-card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+            .tool-card:hover {
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            }
+
+            .tool-card h3 {
+                margin: 0;
+            }
+
+            .tool-card p {
+                margin: 10px 0;
+            }
+
+        /* Position the search box and style it to fit with the separator bar */
+        .search-container-right {
+            position: absolute;
+            top: 120px;
+            right: 20px;
+            padding: 5px;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            display: flex;
+        }
+
+            .search-container-right input[type="text"] {
+                height: 25px;
+                padding: 5px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+            }
+
+            .search-container-right button {
+                padding: 5px 10px;
+                background-color: #333;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                margin-left: 5px;
+            }
+
+        /* Style for the language switch button container, placed at the top right corner */
+        .language-switch-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #555;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Style for the dropdown menu */
+        .language-switch-dropdown {
+            display: none;
+            position: absolute;
+            top: 40px;
+            right: 20px;
+            background-color: #555;
+            border-radius: 5px;
+            padding: 8px;
+        }
+
+            .language-switch-dropdown a {
+                color: white;
+                text-decoration: none;
+                display: block;
+                padding: 5px;
+            }
+
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+    <script>
+        function showLanguageDropdown() {
+            var dropdown = document.getElementById('languageSwitchDropdown');
+            dropdown.style.display = dropdown.style.display === 'block'? 'none' : 'block';
+        }
+
+        function changeLanguage(lang) {
+            if (lang === 'en') {
+                // No need to do anything as we are already on the English page
+            } else if (lang === 'zh-cn') {
+                window.location.href = 'index.html';
+            }
+            // Hide the dropdown menu
+            document.getElementById('languageSwitchDropdown').style.display = 'none';
+        }
+
+        function searchTools() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const toolCards = document.querySelectorAll('.tool-card');
+            toolCards.forEach(card => {
+                const toolName = card.querySelector('h3').textContent.toLowerCase();
+                if (toolName.includes(searchInput)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Add event listener so pressing Enter also triggers the search
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                searchTools();
+            }
+        });
+
+        // Add a global click event listener to hide the dropdown menu when clicking elsewhere on the page
+        document.addEventListener('click', function (event) {
+            var dropdown = document.getElementById('languageSwitchDropdown');
+            var switchContainer = document.querySelector('.language-switch-container');
+            if (!switchContainer.contains(event.target) &&!dropdown.contains(event.target)) {
+                dropdown.style.display = 'none';
+            }
+        });
+    </script>
+</head>
+
+<body>
+    <header>
+        <h1>Deron Tools</h1>
+    </header>
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">Tool 1</a>
+        <a href="#">Tool 2</a>
+        <a href="#">Tool 3</a>
+        <a href="/agreement/userneed.html">User Agreement</a>
+    </nav>
+    <!-- Move the search box container to the right -->
+    <div class="search-container-right">
+        <input type="text" id="searchInput" placeholder="Search tools">
+        <button onclick="searchTools()">Search</button>
+    </div>
+    <div class="language-switch-container" onclick="showLanguageDropdown()">
+        Language Switch
+    </div>
+    <div id="languageSwitchDropdown" class="language-switch-dropdown">
+        <a href="#" onclick="changeLanguage('zh-cn')">中文</a>
+        <a href="#" onclick="changeLanguage('en')">English</a>
+    </div>
+    <div class="container">
+        <div class="tool-card" onclick="window.location.href='musiclock/index.html'">
+            <h3>Music Unlock</h3>
+            <p>Provides music download and unlock functions.</p>
+        </div>
+        <div class="tool-card" onclick="window.location.href='txtcl/txttj.html'">
+            <h3>Word Count</h3>
+            <p>Fast and multi-type word counting.</p>
+        </div>
+        <div class="tool-card" onclick="window.location.href='txtcl/txtbj.html'">
+            <h3>Text Editor</h3>
+            <p>A powerful text editor.</p>
+        </div>
+        <div class="tool-card" onclick="window.location.href='numbercl/sjs.html'">
+            <h3>Random Number Generator</h3>
+            <p>Quickly generate multiple random numbers and support export.</p>
+        </div>
+        <div class="tool-card" onclick="window.location.href='gj/tizhi.html'">
+            <h3>BFR Calculator</h3>
+            <p>Calculate body fat ratio.</p>
+        </div>
+        <div class="tool-card" onclick="window.location.href='gj/zhiurl/zhiurl.html'">
+            <h3>Direct Link Generator</h3>
+            <p>Quickly and safely share files.</p>
+        </div>
+        <div class="tool-card" onclick="window.location.href='gj/pdf/pdfyue.html'">
+            <h3>PDF Reader</h3>
+            <p>A PDF reading tool.</p>
+        </div>
+        <div class="tool-card" onclick="window.location.href='gj/ppt/pptyuetiao.html'">
+            <h3>PPTist</h3>
+            <p>Supports presentation and editing of PPTs.</p>
+        </div>
+        <div class="tool-card" onclick="window.location.href='gj/shorturl.html'">
+            <h3>Short Link Generator</h3>
+            <p>Shorten long links.</p>
+        </div>
+    </div>
+    <footer>
+        &copy; 2024 Deron Tools. All rights reserved.
+    </footer>
+</body>
+
+</html>

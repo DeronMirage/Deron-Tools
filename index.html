@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deron Tools</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        nav {
+            background-color: #444;
+            padding: 10px;
+        }
+
+            nav a {
+                color: white;
+                text-decoration: none;
+                margin: 0 10px;
+            }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .tool-card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+            .tool-card:hover {
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            }
+
+            .tool-card h3 {
+                margin: 0;
+            }
+
+            .tool-card p {
+                margin: 10px 0;
+            }
+
+        /* 定位搜索框并调整样式使其与分隔栏嵌合 */
+        .search-container-right {
+            position: absolute;
+            top: 120px;
+            right: 20px;
+            padding: 5px;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            display: flex;
+        }
+
+            .search-container-right input[type="text"] {
+                height: 25px;
+                padding: 5px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+            }
+
+            .search-container-right button {
+                padding: 5px 10px;
+                background-color: #333;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                margin-left: 5px;
+            }
+
+        /* 语言切换按钮容器样式，放在最右上角 */
+        .language-switch-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #555;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* 下拉菜单样式 */
+        .language-switch-dropdown {
+            display: none;
+            position: absolute;
+            top: 40px;
+            right: 20px;
+            background-color: #555;
+            border-radius: 5px;
+            padding: 8px;
+        }
+
+            .language-switch-dropdown a {
+                color: white;
+                text-decoration: none;
+                display: block;
+                padding: 5px;
+            }
+
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+    <script>
+        function showLanguageDropdown() {
+            var dropdown = document.getElementById('languageSwitchDropdown');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function changeLanguage(lang) {
+            if (lang === 'en') {
+                // 这里可以实现跳转到英文页面或进行相应的语言切换操作
+                window.location.href = 'index_en.html';
+            } else if (lang === 'zh-cn') {
+                // 如果已经在中文页面，可无需操作或进行刷新等
+                // window.location.reload();
+            }
+            // 收起下拉菜单
+            document.getElementById('languageSwitchDropdown').style.display = 'none';
+        }
+
+        function searchTools() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const toolCards = document.querySelectorAll('.tool-card');
+            toolCards.forEach(card => {
+                const toolName = card.querySelector('h3').textContent.toLowerCase();
+                if (toolName.includes(searchInput)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // 添加事件监听器，使按下回车键也能触发搜索
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                searchTools();
+            }
+        });
+
+        // 添加全局点击事件监听器，点击页面其他地方时收起下拉菜单
+        document.addEventListener('click', function (event) {
+            var dropdown = document.getElementById('languageSwitchDropdown');
+            var switchContainer = document.querySelector('.language-switch-container');
+            if (!switchContainer.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.style.display = 'none';
+            }
+        });
+    </script>
+</head>
+
+<body>
+    <header>
+        <h1>Deron Tools</h1>
+    </header>
+    <nav>
+        <a href="#">首页</a>
+        <a href="#">工具一</a>
+        <a href="#">工具二</a>
+        <a href="#">工具三</a>
+        <a href="/xieyi/userneed.html">用户协议</a>
+    </nav>
+    <!-- 搜索框容器移到右边 -->
+    <div class="search-container-right">
+        <input type="text" id="searchInput" placeholder="搜索工具">
+        <button onclick="searchTools()">搜索</button>
+    </div>
+    <div class="language-switch-container" onclick="showLanguageDropdown()">
+        语言切换
+    </div>
+    <div id="languageSwitchDropdown" class="language-switch-dropdown">
+        <a href="#" onclick="changeLanguage('zh-cn')">中文</a>
+        <a href="#" onclick="changeLanguage('en')">English</a>
+    </div>
+    <div class="container">
+        <div class="tool-card" onclick="window.location.href='musiclock/index.html'">
+            <h3>音乐解锁</h3>
+            <p>提供音乐下载、解锁等功能。</p>
+        </div>
+        <div class="tool-card" onclick="window.location.href='txtcl/txttj.html'">
+            <h3>字数统计</h3>
+            <p>快速，多类型的统计字数。</p>
+        </div>
+        <div class="tool-card" onclick="window.location.href='txtcl/txtbj.html'">
+            <h3>文本编辑</h3>
+            <p>功能强大的文本编辑器。</p>
+        </div>
+        <div class="tool-card" onclick="window.location.href='numbercl/sjs.html'">
+            <h3>随机数</h3>
+            <p>快速生成多个随机数，支持导出。</p>
+        </div>
+        <div class="tool-card" onclick="window.location.href='gj/tizhi.html'">
+            <h3>体脂BFR计算器</h3>
+            <p>计算体脂率。</p>
+        </div>
+        <div class="tool-card" onclick="window.location.href='gj/zhiurl/zhiurl.html'">
+            <h3>直链生成</h3>
+            <p>快速安全的分享文件。</p>
+        </div>
+        <div class="tool-card" onclick="window.location.href='gj/pdf/pdfyue.html'">
+            <h3>PDF阅读器</h3>
+            <p>PDF阅读工具。</p>
+        </div>
+        <div class="tool-card" onclick="window.location.href='gj/ppt/pptyuetiao.html'">
+            <h3>PPTist</h3>
+            <p>支持编辑,导出PPTist,pptx文件。</p>
+        </div>
+        <div class="tool-card" onclick="window.location.href='gj/shorturl.html'">
+            <h3>短链生成</h3>
+            <p>将长链接缩短。</p>
+        </div>
+        <div class="tool-card" onclick="window.location.href='play/index.html'">
+            <h3>娱乐工具</h3>
+            <p>有趣的小工具专题。</p>
+        </div>
+        <div class="tool-card" onclick="window.location.href='play/a/muyu.html'">
+            <h3>电子木鱼</h3>
+            <p><a href="play/index.html" style="color: grey;">娱乐工具</a>专题分支。</p>
+        </div>
+        <div class="tool-card" onclick="window.location.href='play/b/poki.html'">
+            <h3>Poki游戏集</h3>
+            <p><a href="play/index.html" style="color: grey;">娱乐工具</a>专题分支。</p>
+        </div>
+        <div class="tool-card" onclick="window.location.href='audio/ffmpeg/index_zh.html'">
+            <h3>音频转换器</h3>
+            <p>基于<a href="https://github.com/chn-lee-yumi/ffmpeg_in_browser" style="color: grey;">FFmpeg网页版</a>制作。</p>
+        </div>
+        <div class="tool-card" onclick="window.location.href='audio/ffmpeg/index_zh.html'">
+            <h3>视频转换器</h3>
+            <p>基于<a href="https://github.com/chn-lee-yumi/ffmpeg_in_browser" style="color: grey;">FFmpeg网页版</a>制作。</p>
+        </div>
+        <div class="tool-card" onclick="window.location.href='audio/ffmpeg/index_zh.html'">
+            <h3>FFmpeg网页版</h3>
+            <p>基于<a href="https://github.com/chn-lee-yumi/ffmpeg_in_browser" style="color: grey;">FFmpeg网页版</a>制作。</p>
+        </div>
+    </div>
+    <footer>
+        &copy; 2024 Deron Tools。所有 Deron，Mirage 保留。
+    </footer>
+    </div>
+    <head>
+        <style>
+            
+            .content {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            img {
+                width: 60px;
+                height: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="content">
+            <p>本站由</p>
+            <img src="image/LOGOcloudflare.png" alt="cloudflareLOGO">
+            <p>提供 CDN 加速和云解析服务</p>
+        </div>
+    </body>
+    </div>
+</body>
+
+</html>
