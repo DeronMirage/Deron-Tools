@@ -1,0 +1,291 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>数据跨境传输协议</title>
+    <style>
+        /* 通用样式 */
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            overflow-y: scroll;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #007bff;
+            text-align: center;
+            margin-top: 0;
+            transition: color 0.5s ease;
+        }
+
+        p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 5px;
+        }
+
+        h2 {
+            color: #343a40;
+            margin-top: 25px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+        }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background: #555;
+            }
+
+        /* 手机端样式 */
+        @media (max-width: 767px) {
+            body {
+                padding: 10px;
+            }
+
+            /* 手机端顶部图片 */
+            .top-background {
+                background-image: url('https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE4wpoK?ver=c288');
+            }
+
+            /* 手机端底部图片 */
+            .bottom-background {
+                background-image: url('https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE4wppR?ver=0eab');
+            }
+
+            /* 手机端交互调整，例如减小雪花大小 */
+            .snowflake {
+                width: 5px;
+                height: 5px;
+            }
+        }
+
+        /* PC 端样式 */
+        @media (min-width: 768px) {
+            /* PC 端顶部图片 */
+            .top-background {
+                background-image: url('https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE4wB7a?ver=d277');
+            }
+
+            /* PC 端底部图片 */
+            .bottom-background {
+                background-image: url('https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE4wwtC?ver=b327');
+            }
+        }
+
+        /* 通用的背景图片样式 */
+        .top-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-repeat: no-repeat;
+            background-size: cover;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: -1;
+        }
+
+        .bottom-background {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-repeat: no-repeat;
+            background-size: cover;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: -1;
+        }
+
+        /* 雪花样式 */
+        .snowflake {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: blue;
+            border-radius: 50%;
+        }
+
+        /* 跟随鼠标移动的线条样式 */
+        .line {
+            position: absolute;
+            width: 2px;
+            height: 50px;
+            background-color: yellow;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="top-background"></div>
+    <div class="bottom-background"></div>
+
+    <h1>数据跨境传输协议</h1>
+    <p>尊敬的用户：</p>
+    <p>感谢您选择使用我们的网站及相关服务。在您使用我们的服务过程中，基于业务运营和服务优化的需要，可能会存在将您的个人数据进行跨境传输的情形。在此，我们依据相关法律法规，特制定本数据跨境传输协议，旨在向您清晰、透明地阐述我们在数据跨境传输方面的处理方式和保障措施，请您在使用我们的服务前仔细阅读。</p>
+
+    <h2>一、数据跨境传输的目的</h2>
+    <p>我们进行数据跨境传输旨在实现以下合法、正当且必要的目的：</p>
+    <ul>
+        <li>为了提升服务质量，更好地满足您的需求和期望。</li>
+        <li>用于数据分析和市场研究，以改进和优化我们的产品与服务。</li>
+        <li>为了履行与您签订的服务协议或合同所规定的义务。</li>
+    </ul>
+
+    <h2>二、涉及的数据类型</h2>
+    <p>可能被跨境传输的数据类型包括但不限于以下个人信息：</p>
+    <ul>
+        <li>您的身份识别信息，如姓名、性别、出生日期、身份证件号码等。</li>
+        <li>联系信息，如电子邮箱地址、电话号码、通讯地址等。</li>
+        <li>账户相关信息，如用户名、密码、账户设置等。</li>
+        <li>交易记录和消费偏好。</li>
+        <li>您在使用我们服务过程中产生的浏览记录、操作日志等。</li>
+    </ul>
+
+    <h2>三、数据接收方</h2>
+    <p>接收您数据的主体可能是位于[接收方所在国家/地区]的以下相关方：</p>
+    <ul>
+        <li>我们的关联公司，以实现集团内部的资源共享和业务协同。</li>
+        <li>合作伙伴，用于共同为您提供特定的服务或产品。</li>
+        <li>服务提供商，例如数据存储、处理、分析等方面的专业机构。</li>
+    </ul>
+    <p>我们将确保这些接收方具备适当的数据保护能力，并通过合同等法律形式要求其按照本协议和适用的法律要求处理您的数据。</p>
+
+    <h2>四、数据保护措施</h2>
+    <p>我们采取了一系列严格的技术和组织措施来保障您数据的安全：</p>
+    <ul>
+        <li>数据在传输过程中采用加密技术，确保数据的保密性和完整性。</li>
+        <li>对数据的访问进行严格的权限控制，只有经过授权的人员能够接触和处理您的数据。</li>
+        <li>定期进行安全审计和风险评估，及时发现并处理可能存在的数据安全隐患。</li>
+    </ul>
+
+    <h2>五、用户权利</h2>
+    <p>您作为数据主体，依据适用的法律，仍然享有以下权利：</p>
+    <ul>
+        <li>访问权：您有权查询我们所处理的关于您的个人数据。</li>
+        <li>更正权：您有权要求我们更正不准确或不完整的个人数据。</li>
+        <li>删除权：在特定条件下，您有权要求我们删除您的个人数据。</li>
+        <li>限制处理权：您有权要求我们限制对您个人数据的处理。</li>
+        <li>数据可携带权：您有权获取您的个人数据，并在技术可行的情况下将其转移给其他数据控制者。</li>
+    </ul>
+    <p>您可以通过以下方式联系我们来行使您的上述权利：[具体的联系方式，如邮箱、电话等]</p>
+
+    <h2>六、法律依据</h2>
+    <p>我们依据以下相关法律法规进行数据的跨境传输：</p>
+    <ul>
+        <li>[具体国家或地区的数据保护法，如欧盟的《通用数据保护条例》（GDPR）、美国的《加州消费者隐私法案》（CCPA）等]</li>
+        <li>其他适用的国际公约、双边或多边协议中关于数据保护的规定。</li>
+    </ul>
+
+    <h2>七、协议变更</h2>
+    <p>我们可能会根据业务发展、法律法规的变化以及其他合理原因对本协议进行更新。如有任何重大变更，我们将通过在网站显著位置发布公告、向您发送电子邮件或其他符合法律要求的方式通知您。在变更生效前，您继续使用我们的服务将视为您同意更新后的协议。</p>
+
+    <p>再次感谢您对我们的信任和支持！如果您继续使用我们的服务，即表示您同意本数据跨境传输协议。</p>
+    <p>[网站运营主体名称]</p>
+    <p>[日期]</p>
+
+    <script>
+        // 滚动交互
+        window.addEventListener('scroll', function () {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            let windowHeight = window.innerHeight;
+            let documentHeight = document.documentElement.scrollHeight;
+
+            let opacityTop = scrollTop / (windowHeight / 2);
+            let opacityBottom = (documentHeight - scrollTop - windowHeight) / (windowHeight / 2);
+
+            opacityTop = Math.min(1, opacityTop);
+            opacityBottom = Math.min(1, opacityBottom);
+
+            document.querySelector('.top-background').style.opacity = opacityTop;
+            document.querySelector('.bottom-background').style.opacity = opacityBottom;
+        });
+
+        // 点击交互
+        document.addEventListener('click', function () {
+            for (let i = 0; i < 20; i++) {
+                createSnowflake();
+            }
+        });
+
+        // 鼠标移动交互
+        document.addEventListener('mousemove', function (event) {
+            moveLines(event.clientX, event.clientY);
+        });
+
+        function createSnowflake() {
+            let snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            snowflake.style.left = Math.random() * window.innerWidth + 'px';
+            snowflake.style.top = '-10px';
+
+            document.body.appendChild(snowflake);
+
+            let initialX = Math.random() * 2 - 1; // 随机水平速度
+            let initialY = Math.random() * 5 + 2; // 随机垂直速度
+            let gravity = 0.1; // 重力加速度
+
+            let animation = setInterval(function () {
+                let x = snowflake.offsetLeft + initialX;
+                let y = snowflake.offsetTop + initialY;
+
+                initialY += gravity;
+
+                if (y > window.innerHeight) {
+                    clearInterval(animation);
+                    document.body.removeChild(snowflake);
+                } else {
+                    snowflake.style.left = x + 'px';
+                    snowflake.style.top = y + 'px';
+                }
+            }, 10);
+        }
+
+        function moveLines(x, y) {
+            let lines = document.querySelectorAll('.line');
+            for (let line of lines) {
+                let distance = Math.sqrt((line.offsetLeft - x) ** 2 + (line.offsetTop - y) ** 2);
+                if (distance < 50) {
+                    let angle = Math.atan2(y - line.offsetTop, x - line.offsetLeft);
+                    line.style.left = line.offsetLeft + 5 * Math.cos(angle) + 'px';
+                    line.style.top = line.offsetTop + 5 * Math.sin(angle) + 'px';
+                }
+            }
+        }
+
+        // 初始化一些线条
+        for (let i = 0; i < 50; i++) {
+            let line = document.createElement('div');
+            line.classList.add('line');
+            line.style.left = Math.random() * window.innerWidth + 'px';
+            line.style.top = Math.random() * window.innerHeight + 'px';
+            document.body.appendChild(line);
+        }
+    </script>
+</body>
+
+</html>
