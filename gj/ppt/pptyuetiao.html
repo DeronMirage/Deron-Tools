@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>页面跳转中</title>
+	<style>
+		body {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			height: 100vh;
+			margin: 0;
+			background-color: #f5f5f5;
+		}
+
+		h1 {
+			font-size: 24px;
+			color: #333;
+		}
+
+		p {
+			font-size: 16px;
+			color: #666;
+			margin-top: 10px;
+		}
+
+		.jump-button {
+			padding: 10px 20px;
+			background-color: #007BFF;
+			color: white;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			margin-top: 20px;
+		}
+
+		/* 新增返回首页按钮样式 */
+		.back-to-home {
+			position: absolute;
+			top: 10px;
+			left: 10px;
+			padding: 5px 10px;
+			background-color: #4CAF50;
+			color: white;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			font-size: 14px;
+		}
+	</style>
+	<script>
+		let countdown = 4;
+		// 自动跳转函数
+		function autoJump() {
+			const countdownElement = document.createElement('p');
+			countdownElement.textContent = `剩余 ${countdown} 秒后自动跳转`;
+			document.body.appendChild(countdownElement);
+			const intervalId = setInterval(() => {
+				countdown--;
+				countdownElement.textContent = `剩余 ${countdown} 秒后自动跳转`;
+				if (countdown === 0) {
+					clearInterval(intervalId);
+					window.location.href = 'pptyue.html';
+				}
+			}, 1000);
+		}
+
+		window.onload = autoJump;
+
+		// 立即跳转函数
+		function jumpNow() {
+			window.location.href = 'pptyue.html';
+		}
+	</script>
+</head>
+
+<body>
+	<!-- 添加返回首页按钮 -->
+	<button class="back-to-home" onclick="window.location.href='../../index.html'">返回首页</button>
+	<h1>页面正在跳转中...</h1>
+	<p>即将跳转到的网站不由Deron Tools（Mirage或Deron）进行管理。</p>
+	<button class="jump-button" onclick="jumpNow()">立即跳转</button>
+</body>
+
+</html>

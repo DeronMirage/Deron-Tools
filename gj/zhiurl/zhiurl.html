@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文件上传与直链生成</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+        #returnButton {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #3498db;
+        }
+
+        #fileInputContainer {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input[type="file"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #copyButton {
+            margin-top: 10px;
+            background-color: #2ecc71;
+        }
+
+        #result {
+            white-space: pre-wrap;
+        }
+
+        .file-info {
+            margin-top: 10px;
+            font-size: 14px;
+            position: relative;
+        }
+
+        .copy-link-btn {
+            position: absolute;
+            top: 0;
+            right: 30px;
+            padding: 5px 10px;
+            background-color: #666;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="../../index.html"><button id="returnButton">返回首页</button></a>
+    <div id="fileInputContainer">
+        <input type="file" id="fileInput" multiple accept="*" ondragover="allowDrop(event)" ondrop="drop(event)">
+    </div>
+    <button onclick="uploadFile()">上传并生成直链</button>
+    <div id="result"></div>
+    <button id="copyButton" onclick="copyLink()">复制直链</button>
+    <p style="color: darkslategrey;">单个文件最大380MB，支持批量上传</p>
+    <p style="color: red;">严禁上传违法文件，否则将承担法律责任。</p>
+
+    <script>
+        function allowDrop(event) {
+            event.preventDefault();
+        }
+
+        function drop(event) {
+            event.preventDefault();
+            const fileInput = document.getElementById('fileInput');
+            const files = event.dataTransfer.files;
+            fileInput.files = files;
+        }
+
+        function uploadFile() {
+            const fileInput = document.getElementById('fileInput');
+            const files = fileInput.files;
+            let resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '';
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const fileExtension = file.name.split('.').pop().toLowerCase();
+                const forbiddenExtensions = ['exe', 'scr', 'bat', 'cmd', 'bin', 'php', 'asp', 'aspx', 'jsp', 'sh', 'vbs', 'ps1', 'ini', 'conf', 'mdb', 'c', 'cpp', 'java'];
+                if (forbiddenExtensions.includes(fileExtension)) {
+                    let fileInfo = document.createElement('p');
+                    fileInfo.classList.add('file-info');
+                    fileInfo.textContent = `禁止上传的文件类型：${file.name}`;
+                    resultDiv.appendChild(fileInfo);
+                    continue;
+                }
+                const formData = new FormData();
+                formData.append('file', file);
+
+                fetch('upload.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.text())
+                    .then(data => {
+                        let fileInfo = document.createElement('p');
+                        fileInfo.classList.add('file-info');
+                        let linkElement = document.createElement('a');
+                        linkElement.href = data;
+                        linkElement.textContent = data;
+                        linkElement.target = '_blank';
+                        fileInfo.appendChild(linkElement);
+                        let br = document.createElement('br');
+                        fileInfo.appendChild(br);
+                        let copyBtn = document.createElement('button');
+                        copyBtn.classList.add('copy-link-btn');
+                        copyBtn.textContent = '复制';
+                        copyBtn.onclick = function () {
+                            if (navigator.clipboard) {
+                                navigator.clipboard.writeText(data).then(() => {
+                                    alert('直链已复制到剪贴板！');
+                                }).catch(err => {
+                                    console.error('无法复制直链：', err);
+                                });
+                            } else {
+                                alert('浏览器不支持剪贴板操作。');
+                            }
+                        };
+                        fileInfo.appendChild(copyBtn);
+                        resultDiv.appendChild(fileInfo);
+                    })
+                    .catch(error => {
+                        let fileInfo = document.createElement('p');
+                        fileInfo.classList.add('file-info');
+                        fileInfo.textContent = `上传失败：${file.name} - ${error.message}`;
+                        resultDiv.appendChild(fileInfo);
+                    });
+            }
+        }
+
+        async function copyLink() {
+            const resultElement = document.getElementById('result');
+            if ('clipboard' in navigator) {
+                try {
+                    const permission = await navigator.permissions.query({ name: 'clipboard-write' });
+                    if (permission.state === 'granted' || permission.state === 'prompt') {
+                        const linkText = resultElement.innerText.split('：')[1];
+                        if (linkText) {
+                            await navigator.clipboard.writeText(linkText);
+                            alert('直链已复制到剪贴板！');
+                        } else {
+                            alert('没有可复制的直链。');
+                        }
+                    } else {
+                        alert('无法获取复制权限。');
+                    }
+                } catch (err) {
+                    console.error('无法复制直链：', err);
+                }
+            } else {
+                alert('浏览器不支持剪贴板操作。');
+            }
+        }
+    </script>
+</body>
+
+</html>

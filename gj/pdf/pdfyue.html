@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>PDF 阅读器</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 1000px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        canvas {
+            border: 1px solid #ddd;
+            margin-top: 20px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        /* 美化返回首页按钮 */
+        .home-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* 打印按钮样式 */
+        .print-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <meta charset="utf-8">
+    <div class="container">
+        <button class="home-button" onclick="window.location.href='../../index.html'">返回首页</button>
+        <input type="file" id="pdfInput">
+        <canvas id="pdfCanvas"></canvas>
+        <div class="controls">
+            <button id="prevPage">上一页</button>
+            <input type="number" id="pageNumberInput" min="1">
+            <button id="nextPage">下一页</button>
+            <button id="toggleFullScreen">全屏</button>
+            <button class="print-button" onclick="printPDF()">打印</button>
+        </div>
+    </div>
+
+    <script>
+        const inputElement = document.getElementById('pdfInput');
+        const canvas = document.getElementById('pdfCanvas');
+        const ctx = canvas.getContext('2d');
+        const prevPageButton = document.getElementById('prevPage');
+        const nextPageButton = document.getElementById('nextPage');
+        const pageNumberInput = document.getElementById('pageNumberInput');
+        const toggleFullScreenButton = document.getElementById('toggleFullScreen');
+
+        let pdfDoc = null;
+        let currentPageNumber = 1;
+
+        inputElement.addEventListener('change', async (event) => {
+            const file = event.target.files[0];
+            const fileReader = new FileReader();
+
+            fileReader.onload = async (fileLoadedEvent) => {
+                const pdfData = new Uint8Array(fileLoadedEvent.target.result);
+                const loadingTask = pdfjsLib.getDocument({ data: pdfData });
+
+                pdfDoc = await loadingTask.promise;
+                showPage(currentPageNumber);
+            };
+
+            fileReader.readAsArrayBuffer(file);
+        });
+
+        prevPageButton.addEventListener('click', () => {
+            if (currentPageNumber > 1) {
+                currentPageNumber--;
+                showPage(currentPageNumber);
+            }
+        });
+
+        nextPageButton.addEventListener('click', () => {
+            if (currentPageNumber < pdfDoc.numPages) {
+                currentPageNumber++;
+                showPage(currentPageNumber);
+            }
+        });
+
+        pageNumberInput.addEventListener('change', () => {
+            const newPageNumber = parseInt(pageNumberInput.value);
+            if (newPageNumber >= 1 && newPageNumber <= pdfDoc.numPages) {
+                currentPageNumber = newPageNumber;
+                showPage(currentPageNumber);
+            }
+        });
+
+        toggleFullScreenButton.addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        });
+
+        async function showPage(pageNumber) {
+            const page = await pdfDoc.getPage(pageNumber);
+            const viewport = page.getViewport({ scale: 1.5 });
+            canvas.width = viewport.width;
+            canvas.height = viewport.height;
+
+            const renderContext = {
+                canvasContext: ctx,
+                viewport: viewport
+            };
+            await page.render(renderContext).promise;
+
+            pageNumberInput.value = pageNumber;
+        }
+
+        function printPDF() {
+            if (pdfDoc && inputElement.files.length > 0) {
+                const fileUrl = URL.createObjectURL(inputElement.files[0]);
+                window.open(fileUrl, '_blank');
+            } else {
+                alert('没有可打印的文件。');
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<script>
+    function redirect() {
+		const url1 = 'https://pipipi-pikachu.github.io/PPTist/';
+		const url2 = 'https://ppt.labss.cn/';
+		const url3 = 'https://online.pptrobot.com/';
+      const xhr1 = new XMLHttpRequest();
+      xhr1.open('GET', url1, true);
+      xhr1.onload = function () {
+        if (xhr1.status === 200) {
+          window.location.href = url1;
+        } else {
+          const xhr2 = new XMLHttpRequest();
+          xhr2.open('GET', url2, true);
+          xhr2.onload = function () {
+            if (xhr2.status === 200) {
+              window.location.href = url2;
+            } else {
+              window.location.href = url3;
+            }
+          };
+          xhr2.send();
+        }
+      };
+      xhr1.send();
+    }
+	</script>
+</head>
+
+<body onload="redirect()">
+</body>
+
+</html>
