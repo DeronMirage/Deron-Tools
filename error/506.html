@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>506 - Variant Also Negotiates</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        h1 {
+            font-size: 3em;
+            z-index: 1;
+        }
+
+        p {
+            font-size: 1.5em;
+            z-index: 1;
+        }
+
+        img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <meta charset="utf-8">
+    <div class="container">
+        <h1>506 - Variant Also Negotiates</h1>
+        <p>很抱歉，服务器存在内部配置错误。</p>
+        <img id="backgroundImage" alt="Background Image">
+        <p id="errorTime"></p>
+    </div>
+
+    <script>
+        // 获取错误发生时间并显示
+        const now = new Date();
+        const time = now.toLocaleString('zh-CN', { hour12: false }).replace(',', ' ');
+        document.getElementById('errorTime').textContent = `错误发生时间：${time}`;
+
+        // 获取背景图片
+        fetch('https://api.kekc.cn/api/microsoftbg')
+            .then(response => response.json())
+            .then(data => {
+                if (data.code === 200) {
+                    document.getElementById('backgroundImage').src = data.data.pc;
+                } else {
+                    console.error(data.msg);
+                }
+            })
+            .catch(error => console.error('Error fetching background image:', error));
+    </script>
+</body>
+
+</html>
